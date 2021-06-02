@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>JS + CSS Clock</title>
+</head>
+
+<body>
+
+
+  <div class="clock">
+    <div class=innerCircle></div>
+    <div class="clock-face">
+      <div class="hour">
+        <div> - </div>
+        <div> - </div>
+        <div> - </div>
+        <div> - </div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+
+      </div>
+      <div class="hand hour-hand" style="font-size: 200px;"></div>
+      <div class="hand min-hand"></div>
+      <div class="hand second-hand" style="transfrom:rotate(120)"></div>
+    </div>
+  </div>
+
+
+  <style id='clock-animations'>
+  </style>
+
+  <style>
+    html {
+      background: white;
+      background-size: cover;
+      font-family: 'helvetica neue';
+      text-align: center;
+      font-size: 10px;
+    }
+
+    body {
+      margin: 0;
+      font-size: 2rem;
+      display: flex;
+      flex: 1;
+      min-height: 100vh;
+      align-items: center;
+    }
+
+    .innerCircle {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: black;
+      position: absolute;
+      top: 45%;
+      right: 45%;
+    }
+
+    .clock {
+      width: 30rem;
+      height: 30rem;
+      border: 20px solid burlywood;
+      border-radius: 50%;
+      margin: 50px auto;
+      position: relative;
+      padding: 2rem;
+      box-shadow:
+        0 0 0 4px rgba(0, 0, 0, 0.1),
+        inset 0 0 0 3px #EFEFEF,
+        inset 0 0 10px black,
+        0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .clock-face {
+      border-radius: 50%;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform: translateY(-3px);
+      /* account for the height of the clock hands */
+    }
+
+    .hand {
+      width: 50%;
+      height: 6px;
+      background: black;
+      position: absolute;
+      top: 50%;
+      transform-origin: 100%;
+      transform: rotate(90deg);
+      transition-timing-function: cubic-bezier(0, 1.74, 1, 1.68);
+      transition: 0.5s;
+      animation:
+
+    }
+
+    .hour-hand {
+      background: brown;
+      display: flex;
+      align-self: left;
+      animation: hourHandAnimation 43200s infinite linear
+
+
+
+    }
+    .min-hand{
+      animation: minutesHandAnimation 3600s infinite linear;
+     
+    }
+
+    .second-hand {
+      /* transform:rotate(30deg); */
+    }
+
+    .hour {
+      width: 6px;
+      height: 12px;
+      background-color: black;
+      position: absolute;
+      top: 0px;
+      right: 50%;
+
+    }
+
+    .hour div:nth-child(1) {
+      width: 500px;
+      position: absolute;
+      top: 280px;
+      right: -250px;
+      font-size: xx-large;
+      transform: rotate(90deg)
+    }
+
+    .hour div:nth-child(2) {
+      /* transform:rotate(120deg)translateY(200) translateX(20); */
+      width: 500px;
+      position: absolute;
+      top: 110px;
+      right: -100px;
+      font-size: xx-large;
+
+    }
+
+    .hour div:nth-child(3) {
+      /* transform:rotate(120deg)translateY(200) translateX(20); */
+      width: 500px;
+      position: absolute;
+      top: 110px;
+      right: -400px;
+      font-size: xx-large;
+    }
+
+    .second-hand {
+      animation: secondHandAnimation 60s infinite linear
+    }
+
+    /* .hour div:nth-child(4) { */
+    /* transform:rotate(120deg)translateY(200) translateX(20); */
+    /* width: 500px; */
+    /* position: absolute; */
+    /* top: 250px; */
+    /* right: -400px; */
+    /* font-size: xx-large; */
+    /* } */
+  </style>
+
+  <script>
+    const secondHand = document.querySelector(`.second-hand`);
+    const hourHand = document.querySelector(`.hour-hand`);
+    const minsHand = document.querySelector(`.min-hand`);
+    const DEG_OFFSET = 90;
+
+    function myClock() {
+      const now = new Date();
+      const mins = now.getMinutes();
+      const hours = now.getHours();
+      // if seconds moves to 0 from 59 set rotation degrees to 360, and then 
+      // restart the transform.
+
+      const seconds = now.getSeconds();
+
+      // if (seconds === 0) {
+      //   const secondsDegrees = ((seconds / 60) * 360) + (360 * mins) + DEG_OFFSET;
+      //   secondHand.style.transform = `rotate(${360 + DEG_OFFSET}deg)`;
+      // }
+      // if(seconds === 1){
+      //   secondHand.style.transform = `none`;
+      //   secondHand.style.transform = `rotate(${DEG_OFFSET}deg)`;
+      // }
+      // else {
+      //   const secondsDegrees = ((seconds / 60) * 360) + DEG_OFFSET;
+      //   secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+      // }
+
+      // const secondsDegrees = ((seconds / 60) * 360) + (360 * mins)  + DEG_OFFSET;
+      // secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+      // console.log(seconds);
+
+
+      const minsDegrees = ((mins / 60) * 360) + (360 * hours) + DEG_OFFSET;
+      minsHand.style.transform = `rotate(${minsDegrees}deg)`;
+
+
+      const hoursDegrees = ((hours / 12) * 360) + DEG_OFFSET;
+      hourHand.style.transform = `rotate(${hoursDegrees}deg)`;
+
+
+    }
+
+    (() => {
+      const now = new Date();
+      const secondsNow = now.getSeconds();
+      const startingSecondDegrees = secondsNow / 60 * 360 + DEG_OFFSET;
+
+      const minutesNow = now.getMinutes();
+      const startingMinutesDeg = minutesNow / 60 * 360 + DEG_OFFSET;
+
+      const hoursNow = now.getHours();
+      const startingHoursDeg = hoursNow / 12 * 360 + DEG_OFFSET;
+
+      const animationString = 
+        `@keyframes secondHandAnimation{
+      0% { transform:  rotate(${startingSecondDegrees}deg)}
+      100% {transform: rotate(${startingSecondDegrees + 360}deg)}
+    } 
+       @Keyframes minutesHandAnimation{
+         0% {transform: rotate(${startingMinutesDeg}deg)}
+         100% { transform: rotate(${startingMinutesDeg+360}deg)}
+       }
+       @keyframes hourHandAnimation{
+         0% { transform: rotate(${startingHoursDeg}deg)}
+         100% { transform: rotate(${startingHoursDeg+ 360}deg)}
+       }`
+
+
+
+    document.getElementById('clock-animations').innerHTML = animationString
+    })();
+
+
+    // setInterval(myClock, 1000);
+    // myClock();
+
+
+  </script>
+</body>
+
+</html>
